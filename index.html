@@ -245,8 +245,10 @@ p.ps{font-size:13px;color:var(--gray-500);margin-bottom:22px;line-height:1.6;max
       </div>
     </div>
     <div class="nav-tabs">
-      <div class="nav-tab active" onclick="goTo('found')">🔍 What I Know</div>
-      <div class="nav-tab" onclick="goTo('catalog')">🗂️ Catalog Architecture</div>
+      <div class="nav-tab active" onclick="goTo('ai')">🤖 AI Assistant</div>
+      <div class="nav-tab" onclick="goTo('aiconflict')">⚡ AI Conflict</div>
+      <div class="nav-tab" onclick="goTo('aionboard')">📸 AI Onboarding</div>
+      <div class="nav-tab" onclick="goTo('catalog')">🗂️ Catalog</div>
       <div class="nav-tab" onclick="goTo('apievolution')">📦 API Evolution</div>
       <div class="nav-tab" onclick="goTo('pricing')">💰 Platform Pricing</div>
       <div class="nav-tab" onclick="goTo('sync')">🔄 Menu Sync</div>
@@ -256,8 +258,260 @@ p.ps{font-size:13px;color:var(--gray-500);margin-bottom:22px;line-height:1.6;max
   </div>
 </nav>
 
-<!-- VIEW 1: WHAT I KNOW -->
-<div id="view-found" class="view active">
+<!-- VIEW: AI CONFLICT DETECTOR -->
+<div id="view-aiconflict" class="view">
+  <div class="eyebrow"><span></span>AI Feature 2</div>
+  <h2 class="pt">AI Conflict Detector — Find Problems Before They Find You</h2>
+  <p class="ps">Today conflicts surface when orders fail, prices are wrong, or a manager notices the mismatch at 11pm. AI Conflict Detector scans the entire menu before every publish and surfaces problems before they reach customers.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+    <!-- CONFLICT SCANNER -->
+    <div style="background:var(--white);border-radius:var(--radius);border:1.5px solid var(--toast-mid);overflow:hidden;box-shadow:var(--shadow-md);">
+      <div style="background:linear-gradient(90deg,var(--toast-dark),var(--toast));padding:12px 16px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:16px;">⚡</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:white;">AI Conflict Scan — Running</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.7);">Little Italy Chennai · All channels · 47 items scanned</div>
+        </div>
+        <button onclick="runScan()" style="margin-left:auto;background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:var(--radius-sm);padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">↻ Re-scan</button>
+      </div>
+
+      <div style="padding:16px;display:flex;flex-direction:column;gap:10px;" id="conflict-list">
+
+        <div style="background:var(--red-light);border:1px solid #FECACA;border-radius:var(--radius-sm);padding:12px 14px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
+            <span style="font-size:16px;flex-shrink:0;">🔴</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:2px;">Price conflict — 3 items on UberEats</div>
+              <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">UberEats has active promotional prices that differ from your Toast menu. Orders will show a balance due until resolved.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+            <span class="badge badge-red">Margherita Pizza -£2.00</span>
+            <span class="badge badge-red">Chicken Pepperoni -£2.49</span>
+            <span class="badge badge-red">Penne Arrabbiata -£1.49</span>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button onclick="resolveConflict('price')" style="font-size:11px;font-weight:600;padding:4px 10px;background:var(--toast);color:white;border:none;border-radius:6px;cursor:pointer;font-family:inherit;">Accept UberEats prices</button>
+            <button style="font-size:11px;font-weight:600;padding:4px 10px;background:var(--white);color:var(--gray-600);border:1px solid var(--gray-200);border-radius:6px;cursor:pointer;font-family:inherit;">Keep Toast prices</button>
+          </div>
+          <div id="price-resolved" style="display:none;font-size:11px;color:var(--green);margin-top:6px;font-weight:600;">✅ Resolved — UberEats prices accepted</div>
+        </div>
+
+        <div style="background:var(--amber-light);border:1px solid #FCD34D;border-radius:var(--radius-sm);padding:12px 14px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
+            <span style="font-size:16px;flex-shrink:0;">🟡</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:600;color:var(--amber);margin-bottom:2px;">Scheduled item has no end time</div>
+              <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">Truffle Pasta is scheduled to start at 6:00 PM but has no end time set. It will remain visible indefinitely after service ends.</div>
+            </div>
+          </div>
+          <button onclick="resolveConflict('schedule')" style="font-size:11px;font-weight:600;padding:4px 10px;background:var(--amber);color:white;border:none;border-radius:6px;cursor:pointer;font-family:inherit;">Set end time to 11:00 PM</button>
+          <div id="schedule-resolved" style="display:none;font-size:11px;color:var(--green);margin-top:6px;font-weight:600;">✅ Resolved — End time set</div>
+        </div>
+
+        <div style="background:var(--amber-light);border:1px solid #FCD34D;border-radius:var(--radius-sm);padding:12px 14px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
+            <span style="font-size:16px;flex-shrink:0;">🟡</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:600;color:var(--amber);margin-bottom:2px;">Modifier referenced by 4 items no longer exists</div>
+              <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">"Extra Parmesan" modifier was deleted but is still referenced by Penne Arrabbiata, Mushroom Risotto, Caesar Salad, and Truffle Pasta. These items will show an error at checkout.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button onclick="resolveConflict('modifier')" style="font-size:11px;font-weight:600;padding:4px 10px;background:var(--amber);color:white;border:none;border-radius:6px;cursor:pointer;font-family:inherit;">Remove from all 4 items</button>
+            <button style="font-size:11px;font-weight:600;padding:4px 10px;background:var(--white);color:var(--gray-600);border:1px solid var(--gray-200);border-radius:6px;cursor:pointer;font-family:inherit;">Recreate modifier</button>
+          </div>
+          <div id="modifier-resolved" style="display:none;font-size:11px;color:var(--green);margin-top:6px;font-weight:600;">✅ Resolved — Modifier removed from all items</div>
+        </div>
+
+        <div style="background:var(--green-light);border:1px solid var(--green-mid);border-radius:var(--radius-sm);padding:12px 14px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">🟢</span>
+            <div style="font-size:13px;font-weight:500;color:var(--green);">44 items passed all checks — no conflicts found</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PM THINKING -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:10px;">What AI Conflict Detector Catches</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <span style="font-size:16px;flex-shrink:0;">🏷️</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Marketplace price conflicts</div><div style="font-size:12px;color:var(--gray-500);">Toast price vs UberEats promo price. You found this in production — AI catches it before service starts.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <span style="font-size:16px;flex-shrink:0;">🕐</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Scheduling gaps</div><div style="font-size:12px;color:var(--gray-500);">Item scheduled to start with no end time. Breakfast item still showing at dinner. Time-specific menu gaps.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <span style="font-size:16px;flex-shrink:0;">🧩</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Broken modifier references</div><div style="font-size:12px;color:var(--gray-500);">Modifier deleted but still referenced by items. Exactly the data integrity problem the Selections feature was built to prevent.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <span style="font-size:16px;flex-shrink:0;">📡</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Channel sync failures</div><div style="font-size:12px;color:var(--gray-500);">Item updated in Toast but not yet synced to Deliveroo. The Channel not found error you hit — caught before it reaches an order.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;">
+            <span style="font-size:16px;flex-shrink:0;">🚫</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Cross-platform incompatibilities</div><div style="font-size:12px;color:var(--gray-500);">BOGOF items flagged before they reach UberEats which does not support them. You built the workaround — AI makes it automatic.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="insight-label">Why I Can Define This Better Than Anyone Else Applying</div>
+        <p>Every single conflict type in this scanner came from a real problem I found during integration work. Price conflicts from the UberEats Marketplace Facilitator thread. Modifier reference breakage from the Selections data model work. BOGOF incompatibility from cross-platform testing. Channel not found from live integration debugging. I did not research these. I lived them.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: AI MENU ONBOARDING -->
+<div id="view-aionboard" class="view">
+  <div class="eyebrow"><span></span>AI Feature 3 — Snap to Menu</div>
+  <h2 class="pt">AI Menu Onboarding — Point Camera, Get a Menu</h2>
+  <p class="ps">Every new restaurant that joins Toast has to manually recreate their menu. That is hours of setup work before a single order can be taken. Snap to Menu collapses this to minutes. Take a photo of any printed menu or catalogue — AI extracts items, categories, prices, images, and creates a draft menu ready to publish.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+    <!-- ONBOARDING FLOW -->
+    <div style="background:var(--white);border-radius:var(--radius);border:1.5px solid var(--toast-mid);overflow:hidden;box-shadow:var(--shadow-md);">
+      <div style="background:linear-gradient(90deg,var(--toast-dark),var(--toast));padding:12px 16px;">
+        <div style="font-size:13px;font-weight:600;color:white;">Snap to Menu — AI Onboarding</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.7);">New restaurant setup · Step 2 of 3</div>
+      </div>
+
+      <!-- STEP TRACKER -->
+      <div style="display:flex;background:var(--gray-50);border-bottom:1px solid var(--gray-200);">
+        <div style="flex:1;padding:10px;text-align:center;border-right:1px solid var(--gray-200);">
+          <div style="font-size:10px;color:var(--green);font-weight:700;">✓ Step 1</div>
+          <div style="font-size:11px;font-weight:600;color:var(--green);">Upload Photo</div>
+        </div>
+        <div style="flex:1;padding:10px;text-align:center;border-right:1px solid var(--gray-200);background:var(--toast-light);">
+          <div style="font-size:10px;color:var(--toast);font-weight:700;">Step 2</div>
+          <div style="font-size:11px;font-weight:600;color:var(--toast);">AI Extraction</div>
+        </div>
+        <div style="flex:1;padding:10px;text-align:center;opacity:0.5;">
+          <div style="font-size:10px;color:var(--gray-400);font-weight:700;">Step 3</div>
+          <div style="font-size:11px;font-weight:600;color:var(--gray-500);">Review and Publish</div>
+        </div>
+      </div>
+
+      <div style="padding:16px;">
+        <!-- UPLOADED IMAGE PLACEHOLDER -->
+        <div style="background:var(--gray-50);border:2px dashed var(--gray-300);border-radius:var(--radius-sm);padding:16px;text-align:center;margin-bottom:14px;position:relative;">
+          <div style="font-size:32px;margin-bottom:6px;">📄</div>
+          <div style="font-size:12px;font-weight:600;color:var(--gray-700);">little_italy_menu.jpg</div>
+          <div style="font-size:11px;color:var(--gray-400);">Uploaded · 2.4MB · Processing complete</div>
+          <div style="position:absolute;top:8px;right:8px;background:var(--green);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">✓ Processed</div>
+        </div>
+
+        <!-- EXTRACTED ITEMS -->
+        <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:8px;">AI extracted 18 items — review before publishing</div>
+
+        <div style="border:1px solid var(--gray-200);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:32px 1fr 80px 60px;gap:0;padding:7px 10px;background:var(--gray-50);border-bottom:1px solid var(--gray-200);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray-500);">
+            <div></div><div>Item</div><div style="text-align:right">Price</div><div style="text-align:center">Status</div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr 80px 60px;gap:0;padding:9px 10px;border-bottom:1px solid var(--gray-100);align-items:center;font-size:12px;">
+            <div style="width:26px;height:26px;background:var(--gray-100);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;">🍕</div>
+            <div><div style="font-weight:500;color:var(--gray-800);">Margherita Pizza</div><div style="font-size:10px;color:var(--gray-400);">Pizzas · Veg · AI confidence 98%</div></div>
+            <div style="text-align:right;font-weight:600;">£12.99</div>
+            <div style="text-align:center;"><span class="badge badge-green" style="font-size:9px;">✓ Ready</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr 80px 60px;gap:0;padding:9px 10px;border-bottom:1px solid var(--gray-100);align-items:center;font-size:12px;">
+            <div style="width:26px;height:26px;background:var(--gray-100);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;">🍕</div>
+            <div><div style="font-weight:500;color:var(--gray-800);">Chicken Pepperoni</div><div style="font-size:10px;color:var(--gray-400);">Pizzas · Non-veg · AI confidence 96%</div></div>
+            <div style="text-align:right;font-weight:600;">£15.99</div>
+            <div style="text-align:center;"><span class="badge badge-green" style="font-size:9px;">✓ Ready</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr 80px 60px;gap:0;padding:9px 10px;border-bottom:1px solid var(--gray-100);align-items:center;font-size:12px;background:var(--amber-light);">
+            <div style="width:26px;height:26px;background:var(--gray-100);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;">🍝</div>
+            <div><div style="font-weight:500;color:var(--gray-800);">Penne Arabbiata</div><div style="font-size:10px;color:var(--amber);">⚠️ Spelling uncertain — Arrabbiata? Confirm</div></div>
+            <div style="text-align:right;font-weight:600;">£10.99</div>
+            <div style="text-align:center;"><span class="badge badge-amber" style="font-size:9px;">Review</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px 1fr 80px 60px;gap:0;padding:9px 10px;align-items:center;font-size:12px;background:var(--red-light);">
+            <div style="width:26px;height:26px;background:var(--gray-100);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;">🐟</div>
+            <div><div style="font-weight:500;color:var(--gray-800);">Grilled Salmon</div><div style="font-size:10px;color:var(--red);">⚠️ Price not detected — please enter manually</div></div>
+            <div style="text-align:right;"><input style="width:70px;border:1px solid var(--gray-300);border-radius:4px;padding:3px 6px;font-size:12px;font-family:inherit;text-align:right;" placeholder="£0.00"></div>
+            <div style="text-align:center;"><span class="badge badge-red" style="font-size:9px;">Fix</span></div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-toast" style="flex:1;font-size:12px;padding:8px;" onclick="completeOnboard()">Publish 16 ready items →</button>
+          <button class="btn btn-ghost btn-sm">Review all 18</button>
+        </div>
+        <div id="onboard-done" style="display:none;background:var(--green-light);border:1px solid var(--green-mid);border-radius:var(--radius-sm);padding:10px;font-size:12px;color:var(--green);font-weight:500;margin-top:8px;text-align:center;">✅ 16 items published. 2 items saved as draft for review.</div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS + TECH -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:12px;">How Snap to Menu Works</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;background:var(--toast);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:2px;">Upload any menu format</div><div style="font-size:12px;color:var(--gray-500);">Photo of printed menu, PDF catalogue, spreadsheet, or even a website URL. AI accepts any format.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;background:var(--toast);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:2px;">AI extracts and structures</div><div style="font-size:12px;color:var(--gray-500);">Item names, categories, prices, dietary labels, descriptions. AI maps them to Toast's menu schema and flags anything uncertain.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;background:var(--toast);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:2px;">Human reviews and confirms</div><div style="font-size:12px;color:var(--gray-500);">AI shows confidence score per item. Low confidence items flagged for review. Human approves before anything publishes.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;background:var(--green);border-radius:50%;color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✓</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:2px;">Published to all channels</div><div style="font-size:12px;color:var(--gray-500);">Approved items published to POS, kiosk, UberEats, Deliveroo — wherever the restaurant needs them.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:10px;">🔧 Tech Behind It — How to Build This</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);border-left:3px solid var(--toast);">
+            <div style="font-size:11px;font-weight:700;color:var(--toast);margin-bottom:3px;">Vision Model — OCR and Layout Understanding</div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">GPT-4V or Claude Vision to parse menu photos. Reads text, understands layout structure (sections, columns, prices), detects item boundaries even on messy printed menus.</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);border-left:3px solid var(--blue);">
+            <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px;">Schema Mapping — LLM to Toast Menu Structure</div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">LLM maps extracted text to Toast's menu schema: menus → categories → subcategories → items → modifiers. Outputs structured JSON matching the Toast Partner API format we already know.</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);border-left:3px solid var(--green);">
+            <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">Image Search — Auto-attach Food Images</div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">For each extracted item, search a licensed food image library using the item name. Attach the best match as the menu image. Restaurant can override. Reduces setup time by 60%.</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);border-left:3px solid var(--purple);">
+            <div style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:3px;">Confidence Scoring — Know What to Trust</div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">Every extracted item gets a confidence score. Above 90% auto-drafts. 70-90% flags for review. Below 70% requires manual entry. Human is always in the loop for uncertain extractions.</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);border-left:3px solid var(--amber);">
+            <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:3px;">Toast IQ Integration — Built on the Existing Platform</div>
+            <div style="font-size:12px;color:var(--gray-600);line-height:1.5;">This is not a separate AI product. It is a feature of Toast IQ applied to menu onboarding. The same AI platform. The same infrastructure. A new use case that the Menus PM owns and the AI team enables.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">The Business Case</div>
+    <p>Every new restaurant on Toast goes through menu setup. If that setup takes 4 hours manually and Snap to Menu reduces it to 20 minutes, that is a 80% reduction in onboarding time. At Toast's scale — thousands of new restaurants per year — that is a measurable impact on time to first order, support tickets, and restaurant satisfaction at the most critical moment of their Toast experience.</p>
+  </div>
+</div>
+
+<!-- VIEW: WHAT I KNOW -->
+<div id="view-found" class="view">
   <div class="hero">
     <div class="hero-chip">🍕 Toast Menus — Senior PM Application</div>
     <h1>I built a menu platform using Toast as the benchmark. Here is <em>what I learned from both sides.</em></h1>
@@ -512,14 +766,15 @@ p.ps{font-size:13px;color:var(--gray-500);margin-bottom:22px;line-height:1.6;max
       <div class="timeline-dot" style="background:var(--purple);">V3.5</div>
       <div class="timeline-body">
         <div class="timeline-version" style="color:var(--purple);">Menu V3.5 — Selections</div>
-        <div class="timeline-title">Supporting Complex Item Configurations</div>
-        <div class="timeline-problem">Problem: Partners needed to send items with nested selection structures — items where the choice of modifier itself defines the price and behaviour. V3 could not express this.</div>
-        <div class="timeline-solution">Solution: Selections support added to the menu schema. Items can now have complex nested modifier structures with min/max permitted, pre-selection defaults, and half-and-half support.</div>
+        <div class="timeline-title">Solving Modifier Duplication — One Modifier, Many Items</div>
+        <div class="timeline-problem">Problem: Every time a modifier was needed on a different item, it had to be duplicated with a new ID. Three items sharing "Extra Cheese" meant three copies of the same modifier. This increased operational cost for agents managing the menu and ballooned menu file size with every new item added.</div>
+        <div class="timeline-solution">Solution: Selections — a data model that allows the same modifier ID to be referenced across multiple items without duplication. Each item can still apply its own configuration changes on top of the shared modifier. One modifier exists once. Many items reference it. Operational cost drops. File size shrinks. This was not a feature request. It was a data model insight.</div>
         <div class="timeline-features">
-          <span class="timeline-tag badge-purple">Selections</span>
-          <span class="timeline-tag badge-purple">Half N Half</span>
-          <span class="timeline-tag badge-purple">Pre-selected modifiers</span>
-          <span class="timeline-tag badge-purple">Nested modifier groups</span>
+          <span class="timeline-tag badge-purple">Shared modifier IDs</span>
+          <span class="timeline-tag badge-purple">Item-level config overrides</span>
+          <span class="timeline-tag badge-purple">No duplication</span>
+          <span class="timeline-tag badge-purple">Reduced menu file size</span>
+          <span class="timeline-tag badge-purple">Lower operational cost</span>
         </div>
       </div>
     </div>
@@ -938,7 +1193,118 @@ p.ps{font-size:13px;color:var(--gray-500);margin-bottom:22px;line-height:1.6;max
   </div>
 </div>
 
-<!-- VIEW 5: WHY ME -->
+<div id="view-ai" class="view active">
+  <div class="eyebrow"><span></span>AI in the AI Era</div>
+  <h2 class="pt">AI Menu Assistant — Agentic Menu Management</h2>
+  <p class="ps">Toast IQ is Toast's AI platform. The Menus JD explicitly asks for someone to explore agentic workflows in menu configuration. Here is what that looks like — a conversational interface where managers type natural language and the menu updates.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+    <!-- CHAT INTERFACE -->
+    <div style="background:var(--white);border-radius:var(--radius);border:1.5px solid var(--toast-mid);overflow:hidden;box-shadow:var(--shadow-md);">
+      <div style="background:linear-gradient(90deg,var(--toast-dark),var(--toast));padding:12px 16px;display:flex;align-items:center;gap:10px;">
+        <div style="width:28px;height:28px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;">🤖</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:white;">Toast IQ — Menu Assistant</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.7);">Agentic menu management · Little Italy Chennai</div>
+        </div>
+        <div style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#22C55E;"></div>
+      </div>
+
+      <div id="ai-messages" style="height:380px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--gray-50);">
+        <div style="display:flex;gap:8px;align-items:flex-start;">
+          <div style="width:26px;height:26px;background:var(--toast);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">🤖</div>
+          <div style="background:var(--white);border-radius:0 var(--radius) var(--radius) var(--radius);padding:10px 14px;font-size:13px;color:var(--gray-800);border:1px solid var(--gray-200);max-width:85%;line-height:1.6;">
+            Hi! I am your Toast IQ Menu Assistant. I can make menu changes, update prices, manage availability, and analyse your menu — just tell me what you need.<br><br>Try asking me something like:<br>• "Make Margherita unavailable on UberEats"<br>• "Copy lunch menu as dinner with 15% uplift"<br>• "Which items haven't sold in 30 days?"
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:10px 12px;background:var(--white);border-top:1px solid var(--gray-200);">
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;" id="ai-chips">
+          <button onclick="aiSend(this.textContent)" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.borderColor='var(--toast)';this.style.color='var(--toast)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-600)'">Make Margherita unavailable on UberEats tonight</button>
+          <button onclick="aiSend(this.textContent)" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.borderColor='var(--toast)';this.style.color='var(--toast)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-600)'">Which items haven't sold in 30 days?</button>
+          <button onclick="aiSend(this.textContent)" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.borderColor='var(--toast)';this.style.color='var(--toast)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-600)'">Copy lunch menu as dinner menu with 15% price uplift</button>
+          <button onclick="aiSend(this.textContent)" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.borderColor='var(--toast)';this.style.color='var(--toast)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-600)'">Which items have pricing conflicts on UberEats?</button>
+          <button onclick="aiSend(this.textContent)" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.borderColor='var(--toast)';this.style.color='var(--toast)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-600)'">Suggest items to remove from lunch menu</button>
+        </div>
+        <div style="display:flex;gap:7px;">
+          <input id="ai-input" type="text" placeholder="Ask me anything about your menu..." style="flex:1;border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;font-family:inherit;outline:none;color:var(--gray-800);" onkeydown="if(event.key==='Enter')aiSend()" onfocus="this.style.borderColor='var(--toast)'" onblur="this.style.borderColor='var(--gray-200)'">
+          <button onclick="aiSend()" style="background:var(--toast);border:none;border-radius:var(--radius-sm);width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PM THINKING PANEL -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:10px;">Why This Is Different From a Chatbot</h3>
+        <p style="font-size:13px;color:var(--gray-600);line-height:1.6;margin-bottom:8px;">A chatbot answers questions. This executes actions. When a manager types "make Margherita unavailable on UberEats tonight" the AI does not say "here is how to do that." It does it — finds the item, identifies the channel, sets availability, queues the sync, and reports what it did.</p>
+        <p style="font-size:13px;color:var(--gray-600);line-height:1.6;">That is what agentic means. The Toast IQ platform is built for exactly this. The Menus PM who joins and says this is what I would build on day one is the PM who leads the roadmap.</p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:10px;">Five Use Cases — Ordered by Impact</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="width:22px;height:22px;background:var(--toast);border-radius:50%;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Natural language availability changes</div><div style="font-size:12px;color:var(--gray-500);">"86 the truffle pasta on all channels right now" → done in one sentence</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="width:22px;height:22px;background:var(--toast);border-radius:50%;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Menu cloning with price transforms</div><div style="font-size:12px;color:var(--gray-500);">"Copy lunch menu as a UberEats menu with 12% markup" → creates and publishes</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="width:22px;height:22px;background:var(--toast);border-radius:50%;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Menu onboarding from PDF or spreadsheet</div><div style="font-size:12px;color:var(--gray-500);">New restaurant uploads their menu. AI extracts, maps to Toast structure, flags ambiguities.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="width:22px;height:22px;background:var(--toast);border-radius:50%;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Slow item detection and suggestions</div><div style="font-size:12px;color:var(--gray-500);">AI reviews 90 days of sales data and suggests which items to remove, rename, or reprice.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;">
+            <div style="width:22px;height:22px;background:var(--toast);border-radius:50%;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
+            <div><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:1px;">Enterprise bulk changes across locations</div><div style="font-size:12px;color:var(--gray-500);">"Increase all burger prices by 5% across all US locations" → queued, previewed, confirmed.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="insight-label">Why I Can Build This at Toast</div>
+        <p>I have built four versions of a menu API. I know exactly what data exists, what can be changed, and what the downstream consequences are for each change. That domain knowledge is what makes an AI menu assistant actually useful — and safe. A PM who does not know the menu data model cannot define what the AI should and should not do. I can.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI CAPABILITIES TABLE -->
+  <div class="card" style="margin-bottom:20px;">
+    <h3 style="font-size:14px;font-weight:600;color:var(--gray-900);margin-bottom:14px;">What the AI Can and Cannot Do — Defined by the PM</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--green);margin-bottom:8px;">✅ AI Can Do Autonomously</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:12px;padding:7px 10px;background:var(--green-light);border-radius:var(--radius-sm);color:var(--green);">Toggle item availability on specific channels</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--green-light);border-radius:var(--radius-sm);color:var(--green);">Show pricing conflicts across platforms</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--green-light);border-radius:var(--radius-sm);color:var(--green);">Report slow-selling items with data</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--green-light);border-radius:var(--radius-sm);color:var(--green);">Draft a new menu from existing items</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--green-light);border-radius:var(--radius-sm);color:var(--green);">Clone menu with price transform rules</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--amber);margin-bottom:8px;">⚠️ AI Requires Human Confirmation</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:12px;padding:7px 10px;background:var(--amber-light);border-radius:var(--radius-sm);color:var(--amber);">Publish a menu change to live channels</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--amber-light);border-radius:var(--radius-sm);color:var(--amber);">Delete items or categories</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--amber-light);border-radius:var(--radius-sm);color:var(--amber);">Bulk price changes across locations</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--amber-light);border-radius:var(--radius-sm);color:var(--amber);">Changes affecting more than 50 items</div>
+          <div style="font-size:12px;padding:7px 10px;background:var(--amber-light);border-radius:var(--radius-sm);color:var(--amber);">Any change during active service hours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 8: WHY ME -->
 <div id="view-whyme" class="view">
   <div class="eyebrow"><span></span>Why Me</div>
   <h2 class="pt">I Have Been on Both Sides of Toast's Menu API</h2>
@@ -975,10 +1341,97 @@ function goTo(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  ['found','catalog','apievolution','pricing','sync','publish','whyme'].forEach((v,i)=>{
+  ['ai','aiconflict','aionboard','catalog','apievolution','pricing','sync','publish','whyme'].forEach((v,i)=>{
     if(v===id) document.querySelectorAll('.nav-tab')[i].classList.add('active');
   });
   window.scrollTo(0,0);
+}
+
+function resolveConflict(type){
+  document.getElementById(type+'-resolved').style.display='block';
+}
+function runScan(){
+  const list=document.getElementById('conflict-list');
+  if(list){list.style.opacity='0.5';setTimeout(()=>{list.style.opacity='1';},1500);}
+}
+function completeOnboard(){
+  document.getElementById('onboard-done').style.display='block';
+}
+
+// AI Menu Assistant
+const aiResponses = {
+  "Make Margherita unavailable on UberEats tonight": {
+    thinking: "Finding Margherita Pizza... checking UberEats channel... updating availability...",
+    response: "Done. ✅\n\nMargherita Pizza has been marked unavailable on UberEats from now until end of service tonight (11:59 PM).\n\nSync status: UberEats confirmed in 12 seconds.\n\nThe item remains available on all other channels — in-store, Deliveroo, and Kiosk. Want me to restore it at a specific time tomorrow?",
+    action: {label:"Availability updated", color:"var(--green)"}
+  },
+  "Which items haven't sold in 30 days?": {
+    thinking: "Analysing sales data for the last 30 days across all channels...",
+    response: "Found 3 items with zero sales in the last 30 days:\n\n🔴 San Pellegrino (Drinks) — 0 orders across all channels\n🟡 Caesar Salad (Starters) — 0 online orders, 2 in-store\n🟡 Chocolate Fondant (Desserts) — 0 orders, last sold 47 days ago\n\nSuggestion: Consider removing San Pellegrino from delivery menus (it's already restricted to in-store) and reviewing Chocolate Fondant for removal or a seasonal label.\n\nWant me to draft a menu cleanup proposal?",
+    action: {label:"Sales analysis complete", color:"var(--blue)"}
+  },
+  "Copy lunch menu as dinner menu with 15% price uplift": {
+    thinking: "Reading Lunch Menu structure... applying 15% price transform... building Dinner Menu draft...",
+    response: "Dinner Menu draft created. ✅\n\n📋 18 items copied from Lunch Menu\n💰 All prices increased by 15% and rounded to nearest £0.50\n🕐 Scheduled availability: 5:00 PM to 11:00 PM\n\nPrice examples:\nMargherita Pizza: £12.99 → £14.99\nPenne Arrabbiata: £10.99 → £12.50\nMushroom Risotto: £13.50 → £15.50\n\nDraft saved. Review and publish when ready — I won't publish without your confirmation.",
+    action: {label:"Draft menu created — awaiting review", color:"var(--amber)"}
+  },
+  "Which items have pricing conflicts on UberEats?": {
+    thinking: "Comparing Toast menu prices with UberEats active prices...",
+    response: "Found 3 pricing conflicts with UberEats:\n\n⚠️ Margherita Pizza — Toast: £12.99 / UberEats promo: £10.99\n⚠️ Chicken Pepperoni — Toast: £15.99 / UberEats promo: £13.50\n⚠️ Penne Arrabbiata — Toast: £10.99 / UberEats promo: £9.50\n\nThese will cause a balance due on orders. UberEats is running a promotional discount that was not reflected in your Toast pricing.\n\nOptions: Accept the UberEats prices, match Toast prices to UberEats, or flag for manual review. Which would you prefer?",
+    action: {label:"3 conflicts detected", color:"var(--red)"}
+  },
+  "Suggest items to remove from lunch menu": {
+    thinking: "Analysing lunch menu performance, order frequency, and margin data...",
+    response: "Based on 90 days of data, here are my suggestions:\n\n🔴 Remove: Caesar Salad — 3 orders in 90 days, low margin, high prep time. No reorders from the same customer.\n\n🟡 Consider removing: Garlic Bread — often ordered as a side but rarely as a standalone. Could be folded into a starter bundle instead.\n\n🟢 Keep everything else — all other items have healthy order frequency.\n\nShall I draft a change proposal with these removals for your review?",
+    action: {label:"Menu analysis complete", color:"var(--blue)"}
+  }
+};
+
+function aiSend(text) {
+  const input = document.getElementById('ai-input');
+  const msgs = document.getElementById('ai-messages');
+  const message = text || input.value.trim();
+  if(!message) return;
+  if(input) input.value = '';
+
+  // User message
+  const userDiv = document.createElement('div');
+  userDiv.style.cssText = 'display:flex;justify-content:flex-end;';
+  userDiv.innerHTML = `<div style="background:var(--toast);border-radius:var(--radius) 0 var(--radius) var(--radius);padding:10px 14px;font-size:13px;color:white;max-width:85%;line-height:1.6;">${message}</div>`;
+  msgs.appendChild(userDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Typing indicator
+  const typingDiv = document.createElement('div');
+  typingDiv.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
+  typingDiv.innerHTML = `<div style="width:26px;height:26px;background:var(--toast);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">🤖</div><div style="background:var(--white);border-radius:0 var(--radius) var(--radius) var(--radius);padding:10px 14px;font-size:12px;color:var(--gray-400);border:1px solid var(--gray-200);" id="typing-msg">Thinking...</div>`;
+  msgs.appendChild(typingDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const resp = aiResponses[message];
+  if(resp) {
+    setTimeout(()=>{
+      document.getElementById('typing-msg').textContent = resp.thinking;
+    }, 500);
+    setTimeout(()=>{
+      typingDiv.remove();
+      const botDiv = document.createElement('div');
+      botDiv.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
+      const formattedResp = resp.response.replace(/\n/g,'<br>');
+      botDiv.innerHTML = `<div style="width:26px;height:26px;background:var(--toast);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">🤖</div><div style="background:var(--white);border-radius:0 var(--radius) var(--radius) var(--radius);padding:10px 14px;font-size:13px;color:var(--gray-800);border:1px solid var(--gray-200);max-width:85%;line-height:1.6;">${formattedResp}<div style="margin-top:8px;display:inline-block;background:${resp.action.color}22;color:${resp.action.color};font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;">✓ ${resp.action.label}</div></div>`;
+      msgs.appendChild(botDiv);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 2000);
+  } else {
+    setTimeout(()=>{
+      typingDiv.remove();
+      const botDiv = document.createElement('div');
+      botDiv.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
+      botDiv.innerHTML = `<div style="width:26px;height:26px;background:var(--toast);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">🤖</div><div style="background:var(--white);border-radius:0 var(--radius) var(--radius) var(--radius);padding:10px 14px;font-size:13px;color:var(--gray-800);border:1px solid var(--gray-200);max-width:85%;line-height:1.6;">I can help with that. Try one of the suggested prompts or ask me about item availability, pricing conflicts, menu cloning, or sales analysis.</div>`;
+      msgs.appendChild(botDiv);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 1500);
+  }
 }
 
 // Pricing table
